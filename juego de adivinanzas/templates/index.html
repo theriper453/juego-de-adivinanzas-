@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Adivinanzas</title>
+</head>
+<body>
+    <h1>Juego de Adivinanzas</h1>
+    
+    <div id="jugadores">
+        <div class="jugador">
+            <h2>Jugador 1</h2>
+            <input type="text" id="pregunta_jugador_1">
+            <button onclick="enviarPregunta(1)">Enviar Pregunta</button>
+            <p id="respuesta_jugador_1"></p>
+        </div>
+    </div>
+    
+    <script>
+        function enviarPregunta(jugador) {
+            var pregunta = document.getElementById("pregunta_jugador_" + jugador).value;
+            fetch('/enviar_pregunta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'jugador_id=' + jugador + '&pregunta=' + pregunta
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                document.getElementById("respuesta_jugador_" + jugador).innerText = "Respuesta del servidor: " + data;
+            });
+        }
+    </script>
+</body>
+</html>
